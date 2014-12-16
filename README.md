@@ -1,5 +1,7 @@
 # Dockerlink 
 
+[![Build Status](https://drone.io/github.com/syb-devs/dockerlink/status.png)](https://drone.io/github.com/syb-devs/dockerlink/latest)
+
 Dockerlink is a small package to get data (IP Address, port, protocol) of a linked Docker container. 
 
 More about [Docker linking](https://docs.docker.com/userguide/dockerlinks/)
@@ -18,7 +20,7 @@ package main
 
 import (
 	"github.com/syb-devs/dockerlink"
-	"gopkg.in/mgo.v2
+	"gopkg.in/mgo.v2"
 )
 
 func main() {
