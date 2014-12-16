@@ -8,8 +8,11 @@ import (
 	"strings"
 )
 
-var ErrLinkNotDefined = errors.New("link not defined")
-var ErrPortNotDefined = errors.New("port not defined")
+var (
+	ErrLinkNotDefined    = errors.New("link not defined")
+	ErrPortNotDefined    = errors.New("port not defined")
+	ErrAddressNotDefined = errors.New("address not defined")
+)
 
 // Link represents a Docker container link
 type Link struct {
@@ -25,6 +28,7 @@ func GetLink(name string, port int, proto string) (*Link, error) {
 	if proto == "" {
 		proto = "TCP"
 	}
+
 	prefix := fmt.Sprintf(
 		"%s_PORT_%d_%s",
 		strings.ToUpper(name),
@@ -35,13 +39,13 @@ func GetLink(name string, port int, proto string) (*Link, error) {
 		return nil, ErrLinkNotDefined
 	}
 
-	envPort := os.Getenv(fmt.Sprintf("%s_PORT", prefix))
-	if envPort == "" {
-		return nil, ErrPortNotDefined
-	}
-	portInt, err := strconv.Atoi(envPort)
+	portInt, err := strconv.Atoi(os.Getenv(fmt.Sprintf("%s_PORT", prefix)))
 	if err != nil {
 		return nil, ErrPortNotDefined
+	}
+	addr := os.Getenv(fmt.Sprintf("%s_ADDR", prefix))
+	if addr == "" {
+		return nil, ErrAddressNotDefined
 	}
 
 	l := &Link{
@@ -49,7 +53,7 @@ func GetLink(name string, port int, proto string) (*Link, error) {
 		Protocol:    strings.ToLower(proto),
 		ExposedPort: port,
 		Port:        portInt,
-		Address:     os.Getenv(fmt.Sprintf("%s_ADDR", prefix)),
+		Address:     addr,
 	}
 	return l, nil
 }

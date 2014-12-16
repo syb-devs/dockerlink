@@ -52,6 +52,16 @@ var getLinkTests = []struct {
 		nil,
 		dockerlink.ErrPortNotDefined,
 	},
+	{
+		envVars{
+			"MYSQL_PORT_3306_TCP":       "tcp://172.17.0.5:5432",
+			"MYSQL_PORT_3306_TCP_PORT":  "5432",
+			"MYSQL_PORT_3306_TCP_PROTO": "tcp",
+		},
+		"MYSQL", 3306, "",
+		nil,
+		dockerlink.ErrAddressNotDefined,
+	},
 }
 
 func TestGetLink(t *testing.T) {
