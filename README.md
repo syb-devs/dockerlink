@@ -8,12 +8,14 @@ More about [Docker linking](https://docs.docker.com/userguide/dockerlinks/)
 
 ## Usage example
 
-Given two containers as follows:
+Given two containers setup as follows:
 
- docker run -d --name db mongo
- docker run -d -P --name goweb --link db:db myrepo/goapp
+```bash
+$ docker run -d --name db mongo
+$ docker run -d -P --name goweb --link db:db myrepo/goapp
+```
 
-We could use the package to get the IP address and port to connect to the MongoDB database from within our Go app in the second container:
+Where the first one is running a MongoDB server and the second one is our Golang web app, we could use the package to get the IP address and port to connect to the MongoDB database from within our Go app in the second container:
 
 ```go
 package main
