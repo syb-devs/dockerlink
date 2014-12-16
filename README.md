@@ -26,7 +26,10 @@ import (
 )
 
 func main() {
-	link := dockerlink.GetLink("db", 27017, "tcp")
+	link, err := dockerlink.GetLink("db", 27017, "tcp")
+	if err != nil {
+		panic(err)
+	}
 
 	session, err := mgo.Dial(fmt.Sprintf("%s:%d", link.Address, link.Port))
 	if err != nil {
